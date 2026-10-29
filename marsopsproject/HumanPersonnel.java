@@ -2,67 +2,70 @@
 package com.mycompany.marsopsproject;
 
 
-public class Facility {
+public abstract class HumanPersonnel extends ColonyMembers {
 
-    private String facilityType;
-    private String location;
-    private int capacity;
-    private boolean operationalStatus;
-    private String resources;
-    private String equipment;
+    private String name;
+    private int health;
+    private String skills;
+    private int fatigue;
+    private String personnelType;
 
-    public void setFacilityType(String facilityType) {
-        this.facilityType = facilityType;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFacilityType() {
-        return facilityType;
+    public String getName() {
+        return name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setHealth(int health) {
+        this.health = health;
     }
 
-    public String getLocation() {
-        return location;
+    public int getHealth() {
+        return health;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setSkills(String skills) {
+        this.skills = skills;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getSkills() {
+        return skills;
     }
 
-    public void setOperationalStatus(boolean operationalStatus) {
-        this.operationalStatus = operationalStatus;
+    public void setFatigue(int fatigue) {
+        this.fatigue = fatigue;
     }
 
-    public boolean getOperationalStatus() {
-        return operationalStatus;
+    public int getFatigue() {
+        return fatigue;
     }
 
-    public void setResources(String resources) {
-    this.resources = resources;
+    public void setPersonnelType(String personnelType) {
+        this.personnelType = personnelType;
     }
 
-    public String getResources() {
-    return resources;
+    public String getPersonnelType() {
+        return personnelType;
     }
 
-    public void setEquipment(String equipment) {
-    this.equipment = equipment;
+    public void capabilities() {
+        if (personnelType.equals("Scientist")) {
+            System.out.println("Performs scientific research missions.");
+        } else if (personnelType.equals("Engineer")) {
+            System.out.println("Repairs damaged equipment.");
+        } else if (personnelType.equals("Medical Officer")) {
+            System.out.println("Responds to medical emergencies.");
+        } else {
+            System.out.println("Unknown personnel type.");
+        }
     }
 
-    public String getEquipment() {
-    return equipment;
-    }
-
-    public void displayInfo() {
-        System.out.println("Facility Type: " + facilityType);
-        System.out.println("Location: " + location);
-        System.out.println("Capacity: " + capacity);
-        System.out.println("Operational: " + operationalStatus);
+    @Override
+    public void checkStatus() {
+        System.out.println("Name: " + name);
+        System.out.println("Health: " + health);
+        System.out.println("Fatigue: " + fatigue);
     }
 }
