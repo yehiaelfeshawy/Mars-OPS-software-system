@@ -29,4 +29,5 @@ public abstract class ColonyMembers {
     }
 
     public abstract void checkStatus();
+
 }

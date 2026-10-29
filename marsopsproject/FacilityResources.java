@@ -123,7 +123,9 @@ public class FacilityResources {
         double neededParts = 2.0;
         double neededBattery = 5.0;
 
-        if (this.facility != null && !this.facility.getOperationalStatus()) {
+        if (this.facility == null
+        || !FacilityResources.facilities.contains(this.facility)
+        || !this.facility.getOperationalStatus()) {
             System.err.println("Cannot perform action: Facility is non-operational.");
             return false;
         }
@@ -176,7 +178,9 @@ public class FacilityResources {
         double neededMedical = 1.0;
         double neededOxegen = 50.0;
 
-        if (this.facility != null && !this.facility.getOperationalStatus()) {
+        if (this.facility == null
+        || !FacilityResources.facilities.contains(this.facility)
+        || !this.facility.getOperationalStatus()) {
             System.err.println("Cannot perform action: Facility is non-operational.");
             return false;
         }
@@ -231,7 +235,9 @@ public class FacilityResources {
     public Boolean Drink_water(HumanPersonnel personnel) {
         double neededWater = 1.0;
 
-        if (this.facility != null && !this.facility.getOperationalStatus()) {
+        if (this.facility == null
+        || !FacilityResources.facilities.contains(this.facility)
+        || !this.facility.getOperationalStatus()) {
             System.err.println("Cannot perform action: Facility is non-operational.");
             return false;
         }
@@ -274,7 +280,9 @@ public class FacilityResources {
     public Boolean Consume_food(HumanPersonnel personnel) {
         double neededFood = 1.0;
 
-        if (this.facility != null && !this.facility.getOperationalStatus()) {
+        if (this.facility == null
+        || !FacilityResources.facilities.contains(this.facility)
+        || !this.facility.getOperationalStatus()) { 
             System.err.println("Cannot perform action: Facility is non-operational.");
             return false;
         }
@@ -317,7 +325,9 @@ public class FacilityResources {
     public Boolean Recharge_robot(RoboticUnit robot) {
         double neededFuel = 100.0;
 
-        if (this.facility != null && !this.facility.getOperationalStatus()) {
+        if (this.facility == null
+        || !FacilityResources.facilities.contains(this.facility)
+        || !this.facility.getOperationalStatus()) {
             System.err.println("Cannot perform action: Facility is non-operational.");
             return false;
         }
