@@ -1,6 +1,4 @@
 
-package com.mycompany.marsopsproject;
-
 public abstract class ColonyMembers {
     private int ID;
     private String location;

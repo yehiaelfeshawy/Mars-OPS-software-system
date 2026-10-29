@@ -1,7 +1,3 @@
-
-package com.mycompany.marsopsproject;
-
-
 public class MarsOpsProject {
 
     public static void main(String[] args) {

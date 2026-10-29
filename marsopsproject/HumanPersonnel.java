@@ -1,7 +1,3 @@
-
-package com.mycompany.marsopsproject;
-
-
 public abstract class HumanPersonnel extends ColonyMembers {
 
     private String name;

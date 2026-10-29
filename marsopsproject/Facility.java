@@ -1,15 +1,15 @@
-
-package com.mycompany.marsopsproject;
-
-
 public class Facility {
 
     private String facilityType;
     private String location;
     private int capacity;
     private boolean operationalStatus;
-    private String resources;
+    private FacilityResources resources;
     private String equipment;
+    private String facilityName;
+    Facility() {
+        FacilityResources.facilities.add(this);
+    }
 
     public void setFacilityType(String facilityType) {
         this.facilityType = facilityType;
@@ -42,13 +42,19 @@ public class Facility {
     public boolean getOperationalStatus() {
         return operationalStatus;
     }
-
-    public void setResources(String resources) {
-    this.resources = resources;
+    public void setFacilityName(String facilityName) {
+        this.facilityName = facilityName;
+    }
+    public String getFacilityName() {
+        return facilityName;
     }
 
-    public String getResources() {
-    return resources;
+    public void setResources(double oxegen, double water, double food, double fuel, double battery_power,double medical_supplies,double spare_parts) {
+        this.resources = new FacilityResources(this, oxegen, water, food, fuel, battery_power, medical_supplies, spare_parts);
+    }
+
+    public FacilityResources getResources() {
+        return resources;
     }
 
     public void setEquipment(String equipment) {

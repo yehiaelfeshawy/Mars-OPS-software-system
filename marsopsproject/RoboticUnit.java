@@ -1,5 +1,3 @@
-package com.mycompany.marsopsproject;
-
 public class RoboticUnit extends ColonyMembers {
 
     private int battery;
@@ -7,6 +5,13 @@ public class RoboticUnit extends ColonyMembers {
     private String robotType;
 
     public void setBattery(int battery) {
+        if(battery < 0) {
+            System.out.println("Battery level cannot be negative.");
+            return;
+        }else if(battery > 100) {
+            System.out.println("Battery level cannot exceed 100.");
+            return;
+        }
         this.battery = battery;
     }
 
