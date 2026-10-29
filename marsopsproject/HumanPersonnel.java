@@ -2,49 +2,67 @@
 package com.mycompany.marsopsproject;
 
 
-public class HumanPersonnel extends ColonyMembers {
-    
-    private String name;
-    private int health;
-    private String skills;
-    private int fatigue;
+public class Facility {
 
-    public void setName(String name) {
-        this.name = name;
+    private String facilityType;
+    private String location;
+    private int capacity;
+    private boolean operationalStatus;
+    private String resources;
+    private String equipment;
+
+    public void setFacilityType(String facilityType) {
+        this.facilityType = facilityType;
     }
 
-    public String getName() {
-        return name;
+    public String getFacilityType() {
+        return facilityType;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public int getHealth() {
-        return health;
+    public String getLocation() {
+        return location;
     }
 
-    public void setSkills(String skills) {
-        this.skills = skills;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
-    public String getSkills() {
-        return skills;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setFatigue(int fatigue) {
-        this.fatigue = fatigue;
+    public void setOperationalStatus(boolean operationalStatus) {
+        this.operationalStatus = operationalStatus;
     }
 
-    public int getFatigue() {
-        return fatigue;
+    public boolean getOperationalStatus() {
+        return operationalStatus;
     }
 
-    @Override
-    public void checkStatus() {
-        System.out.println("Human Name: " + name);
-        System.out.println("Health: " + health);
-        System.out.println("Fatigue: " + fatigue);
+    public void setResources(String resources) {
+    this.resources = resources;
+    }
+
+    public String getResources() {
+    return resources;
+    }
+
+    public void setEquipment(String equipment) {
+    this.equipment = equipment;
+    }
+
+    public String getEquipment() {
+    return equipment;
+    }
+
+    public void displayInfo() {
+        System.out.println("Facility Type: " + facilityType);
+        System.out.println("Location: " + location);
+        System.out.println("Capacity: " + capacity);
+        System.out.println("Operational: " + operationalStatus);
     }
 }
