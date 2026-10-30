@@ -46,22 +46,26 @@ public abstract class HumanPersonnel extends ColonyMembers {
         return personnelType;
     }
 
-    public void capabilities() {
-        if (personnelType.equals("Scientist")) {
-            System.out.println("Performs scientific research missions.");
-        } else if (personnelType.equals("Engineer")) {
-            System.out.println("Repairs damaged equipment.");
-        } else if (personnelType.equals("Medical Officer")) {
-            System.out.println("Responds to medical emergencies.");
-        } else {
-            System.out.println("Unknown personnel type.");
-        }
+   public void capabilities() {
+    if ("Scientist".equals(personnelType)) {
+        System.out.println("Performs scientific research missions.");
+    } else if ("Engineer".equals(personnelType)) {
+        System.out.println("Repairs damaged equipment.");
+    } else if ("Medical Officer".equals(personnelType)) {
+        System.out.println("Responds to medical emergencies.");
+    } else {
+        System.out.println("Unknown personnel type.");
     }
+}
 
     @Override
     public void checkStatus() {
         System.out.println("Name: " + name);
+        System.out.println("ID: " + getID());
+        System.out.println("Location: " + getLocation());
+        System.out.println("Availability: " + getAvailability());
         System.out.println("Health: " + health);
+        System.out.println("Skills: " + skills);
         System.out.println("Fatigue: " + fatigue);
-    }
+}
 }
