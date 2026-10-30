@@ -120,6 +120,18 @@ public class FacilityResources {
     // --- ACTION METHODS ---
 
     public Boolean Facility_Repair_Mission(RoboticUnit robot) {
+        
+
+    if (robot == null) {
+        System.out.println("Invalid robot.");
+        return false;
+    }
+
+    if (!robot.getAvailability()) {
+        System.out.println("Robot is unavailable.");
+        return false;
+    }
+
         double neededParts = 2.0;
         double neededBattery = 5.0;
 
@@ -175,6 +187,17 @@ public class FacilityResources {
     }
 
     public Boolean Facility_Medical_emergency(HumanPersonnel personnel) {
+ 
+        if (personnel == null) {
+        System.out.println("Invalid personnel.");
+        return false;
+        }
+
+        if (!personnel.getAvailability()) {
+        System.out.println("Personnel is unavailable.");
+        return false;
+         }   
+
         double neededMedical = 1.0;
         double neededOxegen = 50.0;
 
@@ -233,6 +256,17 @@ public class FacilityResources {
     }
 
     public Boolean Drink_water(HumanPersonnel personnel) {
+
+        if (personnel == null) {
+        System.out.println("Invalid personnel.");
+        return false;
+        }
+
+        if (!personnel.getAvailability()) {
+        System.out.println("Personnel is unavailable.");
+        return false;
+        }
+
         double neededWater = 1.0;
 
         if (this.facility == null
@@ -278,6 +312,16 @@ public class FacilityResources {
     }
 
     public Boolean Consume_food(HumanPersonnel personnel) {
+     
+        if (personnel == null) {
+        System.out.println("Invalid personnel.");
+        return false;
+        }
+
+        if (!personnel.getAvailability()) {
+        System.out.println("Personnel is unavailable.");
+        return false;
+        }
         double neededFood = 1.0;
 
         if (this.facility == null
@@ -323,6 +367,18 @@ public class FacilityResources {
     }
 
     public Boolean Recharge_robot(RoboticUnit robot) {
+ 
+        if (robot == null) {
+        System.out.println("Invalid robot.");
+        return false;
+        }
+
+        if (!robot.getAvailability()) {
+        System.out.println("Robot is unavailable.");
+        return false;
+        }
+
+    
         double neededFuel = 100.0;
 
         if (this.facility == null
