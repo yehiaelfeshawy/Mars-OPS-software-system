@@ -1,4 +1,4 @@
-
+package com.mycompany.opsmars;
 public class MedicalOfficer extends HumanPersonnel {
 
     private String specialization;
@@ -10,7 +10,7 @@ public class MedicalOfficer extends HumanPersonnel {
         setHealth(health);
         setSkills(skills);
         setFatigue(fatigue);
-        setPersonnelType("MedicalOfficer");
+        setPersonnelType("Medical Officer");
         setAvailability(true);
 
         this.specialization = specialization;
