@@ -1,4 +1,4 @@
-package com.mycompany.opsmars;
+
 public class MedicalOfficer extends HumanPersonnel {
 
     private String specialization;
