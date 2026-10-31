@@ -1,4 +1,4 @@
-public class RoboticUnit extends ColonyMembers {
+public abstract class RoboticUnit extends ColonyMembers {
 
     private int battery;
     private String damageStatus;
@@ -35,22 +35,22 @@ public class RoboticUnit extends ColonyMembers {
         return robotType;
     }
 
-    public void capabilities() {
-        if (robotType.equals("Exploration Rover")) {
-            System.out.println("Explores the Martian surface.");
-            System.out.println("Carries equipment.");
-            System.out.println("Performs exploration.");
-        } else if (robotType.equals("Repair Robot")) {
-            System.out.println("Repairs damaged equipment.");
-            System.out.println("Operates inside facilities.");
-        } else if (robotType.equals("Drone")) {
-            System.out.println("Performs aerial reconnaissance.");
-            System.out.println("Reaches areas inaccessible to ground vehicles.");
-        } else {
-            System.out.println("Unknown robot type.");
-        }
+  public void capabilities() {
+    if ("Exploration Rover".equals(robotType)) {
+        System.out.println("Explores the Martian surface.");
+        System.out.println("Carries equipment.");
+        System.out.println("Performs exploration.");
+    } else if ("Repair Robot".equals(robotType)) {
+        System.out.println("Repairs damaged equipment.");
+        System.out.println("Operates inside facilities.");
+    } else if ("Drone".equals(robotType)) {
+        System.out.println("Performs aerial reconnaissance.");
+        System.out.println("Reaches areas inaccessible to ground vehicles.");
+    } else {
+        System.out.println("Unknown robot type.");
     }
-    
+}
+  
 public boolean canPerform(Mission mission) {
 
     if (mission == null || !getAvailability()
@@ -81,5 +81,7 @@ public boolean canPerform(Mission mission) {
         System.out.println("Robot Type: " + robotType);
         System.out.println("Battery: " + battery);
         System.out.println("Damage Status: " + damageStatus);
+        System.out.println("Location: " + getLocation());
+        System.out.println("Availability: " + getAvailability());
     }
 }

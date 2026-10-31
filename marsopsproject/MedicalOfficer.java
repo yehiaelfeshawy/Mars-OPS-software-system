@@ -10,7 +10,7 @@ public class MedicalOfficer extends HumanPersonnel {
         setHealth(health);
         setSkills(skills);
         setFatigue(fatigue);
-        setPersonnelType("MedicalOfficer");
+        setPersonnelType("Medical Officer");
         setAvailability(true);
 
         this.specialization = specialization;
