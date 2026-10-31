@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 
 public class MarsColony {
@@ -360,7 +359,60 @@ public void releaseAgents(Mission mission) {
             activeMission = null;
         }
     }
-}
+}public String checkResources(double[] needed) {
+        String[] names = {"Oxygen", "Water", "Food", "Fuel", "Battery Power", "Medical Supplies", "Spare Parts"};
+        for (int i = 0; i < needed.length; i++) {
+            if (needed[i] <= 0) continue;
+            double total = 0;
+            for (Facility facility : facilities) {
+                if (facility.getOperationalStatus() && facility.getResources() != null) {
+                    total += getResourceAmount(facility.getResources(), i);
+                }
+            }
+            if (total < needed[i]) {
+                return "Insufficient " + names[i];
+            }
+        }
+        return null;
+    }
+
+    public void consume(double[] needed) {
+        for (int i = 0; i < needed.length; i++) {
+            double remaining = needed[i];
+            if (remaining <= 0) continue;
+            for (Facility facility : facilities) {
+                if (!facility.getOperationalStatus() || facility.getResources() == null) continue;
+                FacilityResources store = facility.getResources();
+                double available = getResourceAmount(store, i);
+                double take = Math.min(available, remaining);
+                if (take > 0) {
+                    setResourceAmount(store, i, available - take);
+                    remaining -= take;
+                }
+                if (remaining <= 0) break;
+            }
+        }
+    }
+
+    public ColonyMembers findResponder(String type, boolean isRobot) {
+        for (ColonyMembers member : members) {
+            if (!member.getAvailability()) continue;
+            if (isRobot) {
+                if (member instanceof RoboticUnit) {
+                    if ("OXYGEN_LEAK".equals(type) && member instanceof RepairRobot) return member;
+                    if ("ROVER_BREAKDOWN".equals(type) && member instanceof RepairRobot) return member;
+                }
+            } else {
+                if (member instanceof HumanPersonnel) {
+                    if ("OXYGEN_LEAK".equals(type) && member instanceof Engineer) return member;
+                    if ("FIRE".equals(type) && member instanceof Engineer) return member;
+                    if ("ROVER_BREAKDOWN".equals(type) && member instanceof Engineer) return member;
+                    if ("MEDICAL".equals(type) && member instanceof MedicalOfficer) return member;
+                }
+            }
+        }
+        return null;
+    }
 
 
     public void displayInfo() {
