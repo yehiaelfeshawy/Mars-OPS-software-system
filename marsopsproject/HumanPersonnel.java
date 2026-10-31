@@ -58,6 +58,29 @@ public abstract class HumanPersonnel extends ColonyMembers {
         }
     }
 
+public boolean canPerform(Mission mission) {
+
+    if (mission == null || !getAvailability()) {
+        return false;
+    }
+
+    if (this instanceof Scientist) {
+        return mission instanceof ResearchMission
+                || mission instanceof ExplorationMission;
+    }
+
+    if (this instanceof Engineer) {
+        return mission instanceof RepairMission
+                || mission instanceof RescueMission;
+    }
+
+    if (this instanceof MedicalOfficer) {
+        return mission instanceof RescueMission;
+    }
+
+    return false;
+}
+
     @Override
     public void checkStatus() {
         System.out.println("Name: " + name);

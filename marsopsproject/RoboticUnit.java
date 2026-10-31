@@ -50,6 +50,31 @@ public class RoboticUnit extends ColonyMembers {
             System.out.println("Unknown robot type.");
         }
     }
+    
+public boolean canPerform(Mission mission) {
+
+    if (mission == null || !getAvailability()
+            || getBattery() <= 0) {
+        return false;
+    }
+
+    if (this instanceof ExplorationRover) {
+        return mission instanceof ExplorationMission
+                || mission instanceof RescueMission;
+    }
+
+    if (this instanceof RepairRobot) {
+        return mission instanceof RepairMission;
+    }
+
+    if (this instanceof Drone) {
+        return mission instanceof ExplorationMission
+                || mission instanceof RescueMission;
+    }
+
+    return false;
+}
+
 
     @Override
     public void checkStatus() {
