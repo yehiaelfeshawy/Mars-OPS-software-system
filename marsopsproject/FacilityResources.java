@@ -24,8 +24,6 @@ public class FacilityResources {
         setFacilitySpare_parts(spare_parts);
     }
 
-    // --- STATIC COLONY GETTERS ---
-
     public static double get_oxegen() {
         double totalOxegen = 0.0;
         for (Facility facility : facilities) {
@@ -116,8 +114,6 @@ public class FacilityResources {
         }
         return totalSpareParts;
     }
-
-    // --- ACTION METHODS ---
 
     public Boolean Facility_Repair_Mission(RoboticUnit robot) {
         
@@ -422,8 +418,6 @@ public class FacilityResources {
         }
         return true;
     }
-
-    // --- GETTERS AND SETTERS ---
 
     public void setFacility(Facility facility) {
         this.facility = facility;

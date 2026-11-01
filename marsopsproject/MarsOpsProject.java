@@ -2,9 +2,6 @@ public class MarsOpsProject {
 
     public static void main(String[] args) {
 
-        // ==================================================================
-        // SCENARIO 1: Successful Exploration
-        // ==================================================================
         System.out.println("========================================");
         System.out.println("SCENARIO 1: Successful Exploration");
         System.out.println("========================================");
@@ -53,9 +50,6 @@ public class MarsOpsProject {
         System.out.println("Rover available: " + rover.getAvailability());
         System.out.println("Active mission: " + colony1.getActiveMission());
 
-        // ==================================================================
-        // SCENARIO 2: Mission Rejection (unsuitable agent)
-        // ==================================================================
         System.out.println();
         System.out.println("========================================");
         System.out.println("SCENARIO 2: Mission Rejection");
@@ -90,9 +84,6 @@ public class MarsOpsProject {
         }
         System.out.println("Mission state: " + mission2.getState());
 
-        // ==================================================================
-        // SCENARIO 3: Resource Shortage (all-or-nothing, 0 consumed)
-        // ==================================================================
         System.out.println();
         System.out.println("========================================");
         System.out.println("SCENARIO 3: Resource Shortage");
@@ -145,9 +136,6 @@ public class MarsOpsProject {
         System.out.println("Resources consumed: " + (spareBefore == spareAfter && batteryBefore == batteryAfter ? "0 (none)" : "non-zero"));
         System.out.println("Mission state: " + mission3.getState());
 
-        // ==================================================================
-        // SCENARIO 4: Emergency Handling - Oxygen Leak
-        // ==================================================================
         System.out.println();
         System.out.println("========================================");
         System.out.println("SCENARIO 4: Emergency Handling (Oxygen Leak)");
@@ -185,9 +173,6 @@ public class MarsOpsProject {
         System.out.println("Engineer available: " + eng4.getAvailability());
         System.out.println("RepairRobot available: " + bot4.getAvailability());
 
-        // ==================================================================
-        // SCENARIO 5: Environmental Effect - Dust Storm
-        // ==================================================================
         System.out.println();
         System.out.println("========================================");
         System.out.println("SCENARIO 5: Environmental Effect (Dust Storm)");

@@ -23,8 +23,8 @@ public class RoverBreakdown extends Emergency {
         ColonyMembers robot = colony.findResponder(EmergencyType.ROVER_BREAKDOWN);
 
         double[] cost = new double[7];
-        cost[6] = 2; // Spare parts
-        cost[4] = 5; // Battery power
+        cost[6] = 2;
+        cost[4] = 5;
 
         if (human == null || robot == null) {
             unresolved("Required responders are unavailable");

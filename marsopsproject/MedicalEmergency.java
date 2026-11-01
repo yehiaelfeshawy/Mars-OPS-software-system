@@ -24,8 +24,8 @@ public class MedicalEmergency extends Emergency {
         }
 
         double[] cost = new double[7];
-        cost[5] = 2; // Medical supplies index
-        cost[0] = 5; // Oxygen index
+        cost[5] = 2;
+        cost[0] = 5;
 
         String shortage = colony.checkResources(cost);
         if (shortage != null) {

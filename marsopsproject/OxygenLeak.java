@@ -15,7 +15,6 @@ public class OxygenLeak extends Emergency {
     public void respond(MarsColony colony) {
         System.out.println("Oxygen leak detected in " + habitat.getFacilityName() + ".");
 
-        // Deduct initial oxygen on detection
         if (habitat.getResources() != null) {
             double current = habitat.getResources().getFacilityOxegen();
             habitat.getResources().setFacilityOxegen(Math.max(0, current - loss));
@@ -25,7 +24,6 @@ public class OxygenLeak extends Emergency {
         ColonyMembers robot = colony.findResponder(EmergencyType.OXYGEN_LEAK);
 
         if (human == null || robot == null) {
-            // Unresolved leak costs twice as much oxygen (spec rule)
             if (habitat.getResources() != null) {
                 double current = habitat.getResources().getFacilityOxegen();
                 habitat.getResources().setFacilityOxegen(Math.max(0, current - loss));
@@ -39,7 +37,6 @@ public class OxygenLeak extends Emergency {
         cost.put(ResourceType.BATTERY_POWER, 5);
 
         if (!colony.hasResources(cost)) {
-            // Unresolved leak costs oxygen a second time (penalty)
             if (habitat.getResources() != null) {
                 double current = habitat.getResources().getFacilityOxegen();
                 habitat.getResources().setFacilityOxegen(Math.max(0, current - loss));

@@ -23,7 +23,7 @@ public class Fire extends Emergency {
         ColonyMembers human = colony.findResponder(EmergencyType.FIRE);
 
         double[] cost = new double[7];
-        cost[6] = 1; // Spare parts
+        cost[6] = 1;
 
         String shortage = colony.checkResources(cost);
 
