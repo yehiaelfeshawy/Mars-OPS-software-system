@@ -1,4 +1,3 @@
-
 public class RescueMission extends Mission {
 
     private String rescueLocation;

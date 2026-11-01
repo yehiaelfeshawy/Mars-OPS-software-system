@@ -1,4 +1,3 @@
-
 public class MedicalEmergency extends Emergency {
     private HumanPersonnel patient;
     private Facility facility;
@@ -18,7 +17,7 @@ public class MedicalEmergency extends Emergency {
             return;
         }
 
-        ColonyMembers officer = colony.findResponder("MEDICAL", false);
+        ColonyMembers officer = colony.findResponder(EmergencyType.MEDICAL);
         if (officer == null) {
             unresolved("No available medical officer");
             return;

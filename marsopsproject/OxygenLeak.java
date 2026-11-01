@@ -1,4 +1,5 @@
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class OxygenLeak extends Emergency {
     private Habitat habitat;
@@ -20,8 +21,8 @@ public class OxygenLeak extends Emergency {
             habitat.getResources().setFacilityOxegen(Math.max(0, current - loss));
         }
 
-        ColonyMembers human = colony.findResponder("OXYGEN_LEAK", false);
-        ColonyMembers robot = colony.findResponder("OXYGEN_LEAK", true);
+        ColonyMembers human = colony.findResponder(EmergencyType.OXYGEN_LEAK);
+        ColonyMembers robot = colony.findResponder(EmergencyType.OXYGEN_LEAK);
 
         if (human == null || robot == null) {
             // Unresolved leak costs twice as much oxygen (spec rule)
@@ -33,25 +34,24 @@ public class OxygenLeak extends Emergency {
             return;
         }
 
-        double[] cost = new double[7];
-        cost[6] = 2; // Spare parts index
-        cost[4] = 5; // Battery power index
+        Map<ResourceType, Integer> cost = new HashMap<>();
+        cost.put(ResourceType.SPARE_PARTS, 2);
+        cost.put(ResourceType.BATTERY_POWER, 5);
 
-        String shortage = colony.checkResources(cost);
-
-        if (shortage != null) {
+        if (!colony.hasResources(cost)) {
+            // Unresolved leak costs oxygen a second time (penalty)
             if (habitat.getResources() != null) {
                 double current = habitat.getResources().getFacilityOxegen();
                 habitat.getResources().setFacilityOxegen(Math.max(0, current - loss));
             }
-            unresolved(shortage);
+            unresolved("Insufficient resources");
             return;
         }
 
         dispatch(human, habitat.getFacilityName());
         dispatch(robot, habitat.getFacilityName());
 
-        colony.consume(cost);
+        colony.consumeResources(cost);
         resolve();
 
         release(human);

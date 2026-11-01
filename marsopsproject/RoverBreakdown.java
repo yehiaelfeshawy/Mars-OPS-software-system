@@ -1,4 +1,3 @@
-
 public class RoverBreakdown extends Emergency {
     private ExplorationRover rover;
 
@@ -20,8 +19,8 @@ public class RoverBreakdown extends Emergency {
             colony.releaseAgents(mission);
         }
 
-        ColonyMembers human = colony.findResponder("ROVER_BREAKDOWN", false);
-        ColonyMembers robot = colony.findResponder("ROVER_BREAKDOWN", true);
+        ColonyMembers human = colony.findResponder(EmergencyType.ROVER_BREAKDOWN);
+        ColonyMembers robot = colony.findResponder(EmergencyType.ROVER_BREAKDOWN);
 
         double[] cost = new double[7];
         cost[6] = 2; // Spare parts

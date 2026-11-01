@@ -1,4 +1,3 @@
-
 public abstract class ColonyMembers {
     private int ID;
     private String location;
@@ -29,5 +28,9 @@ public abstract class ColonyMembers {
     }
 
     public abstract void checkStatus();
+
+    public abstract boolean canPerform(Mission mission);
+
+    public abstract boolean canHandle(EmergencyType type);
 
 }

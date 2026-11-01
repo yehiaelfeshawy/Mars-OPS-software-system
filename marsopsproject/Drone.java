@@ -1,4 +1,3 @@
-
 public class Drone extends RoboticUnit {
 
     private String model;
@@ -25,5 +24,20 @@ public class Drone extends RoboticUnit {
     public void checkStatus() {
         super.checkStatus();
         System.out.println("Model: " + model);
+    }
+
+    @Override
+    public boolean canPerform(Mission mission) {
+        if (mission == null || !getAvailability()
+                || getBattery() <= 0) {
+            return false;
+        }
+        return mission instanceof ExplorationMission
+                || mission instanceof RescueMission;
+    }
+
+    @Override
+    public boolean canHandle(EmergencyType type) {
+        return false;
     }
 }

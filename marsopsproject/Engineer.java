@@ -1,4 +1,3 @@
-
 public class Engineer extends HumanPersonnel {
 
     private String specialization;
@@ -28,5 +27,20 @@ public class Engineer extends HumanPersonnel {
     public void checkStatus() {
         super.checkStatus();
         System.out.println("Specialization: " + specialization);
+    }
+
+    @Override
+    public boolean canPerform(Mission mission) {
+        if (mission == null || !getAvailability()) {
+            return false;
+        }
+        return mission instanceof RepairMission;
+    }
+
+    @Override
+    public boolean canHandle(EmergencyType type) {
+        return type == EmergencyType.OXYGEN_LEAK
+                || type == EmergencyType.FIRE
+                || type == EmergencyType.ROVER_BREAKDOWN;
     }
 }

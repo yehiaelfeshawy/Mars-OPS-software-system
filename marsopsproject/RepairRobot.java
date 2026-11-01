@@ -1,4 +1,3 @@
-
 public class RepairRobot extends RoboticUnit {
 
     private String model;
@@ -25,5 +24,21 @@ public class RepairRobot extends RoboticUnit {
     public void checkStatus() {
         super.checkStatus();
         System.out.println("Model: " + model);
+    }
+
+    @Override
+    public boolean canPerform(Mission mission) {
+        if (mission == null || !getAvailability()
+                || getBattery() <= 0) {
+            return false;
+        }
+        return mission instanceof RepairMission;
+    }
+
+    @Override
+    public boolean canHandle(EmergencyType type) {
+        return type == EmergencyType.OXYGEN_LEAK
+                || type == EmergencyType.FIRE
+                || type == EmergencyType.ROVER_BREAKDOWN;
     }
 }

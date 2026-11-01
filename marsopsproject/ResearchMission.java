@@ -1,4 +1,3 @@
-
 public class ResearchMission extends Mission {
 
     private String researchTopic;

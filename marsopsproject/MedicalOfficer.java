@@ -1,4 +1,3 @@
-
 public class MedicalOfficer extends HumanPersonnel {
 
     private String specialization;
@@ -28,6 +27,20 @@ public class MedicalOfficer extends HumanPersonnel {
     public void checkStatus() {
         super.checkStatus();
         System.out.println("Specialization: " + specialization);
+    }
+
+    @Override
+    public boolean canPerform(Mission mission) {
+        if (mission == null || !getAvailability()) {
+            return false;
+        }
+        return mission instanceof RescueMission;
+    }
+
+    @Override
+    public boolean canHandle(EmergencyType type) {
+        return type == EmergencyType.MEDICAL
+                || type == EmergencyType.FIRE;
     }
 }
 

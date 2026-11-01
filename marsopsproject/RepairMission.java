@@ -1,4 +1,3 @@
-
 public class RepairMission extends Mission {
 
     private String repairDescription;

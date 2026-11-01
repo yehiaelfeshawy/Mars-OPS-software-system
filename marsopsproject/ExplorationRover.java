@@ -1,4 +1,3 @@
-
 public class ExplorationRover extends RoboticUnit {
 
     private String model;
@@ -25,6 +24,20 @@ public class ExplorationRover extends RoboticUnit {
     public void checkStatus() {
         super.checkStatus();
         System.out.println("Model: " + model);
+    }
+
+    @Override
+    public boolean canPerform(Mission mission) {
+        if (mission == null || !getAvailability()
+                || getBattery() <= 0) {
+            return false;
+        }
+        return mission instanceof ExplorationMission;
+    }
+
+    @Override
+    public boolean canHandle(EmergencyType type) {
+        return type == EmergencyType.ROVER_BREAKDOWN;
     }
 }
 

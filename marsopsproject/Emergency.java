@@ -1,4 +1,3 @@
-
 public abstract class Emergency {
     private String type;
     private String status;

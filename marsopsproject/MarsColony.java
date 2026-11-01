@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MarsColony {
 
@@ -89,12 +91,6 @@ public boolean submitMission(Mission mission) {
         return false;
     }
 
-    boolean hasScientist = false;
-    boolean hasEngineer = false;
-    boolean hasHuman = false;
-    boolean hasRover = false;
-    boolean hasRepairRobot = false;
-
     for (ColonyMembers agent : mission.getAssignedAgents()) {
 
         if (agent == null || !members.contains(agent)) {
@@ -109,79 +105,8 @@ public boolean submitMission(Mission mission) {
             return false;
         }
 
-        if (agent instanceof HumanPersonnel) {
-
-            HumanPersonnel human = (HumanPersonnel) agent;
-
-            if (!human.canPerform(mission)) {
-                mission.fail("Human cannot perform mission");
-                addMission(mission);
-                return false;
-            }
-
-            hasHuman = true;
-
-            if (human instanceof Scientist) {
-                hasScientist = true;
-            }
-
-            if (human instanceof Engineer) {
-                hasEngineer = true;
-            }
-
-        } else if (agent instanceof RoboticUnit) {
-
-            RoboticUnit robot = (RoboticUnit) agent;
-
-            if (!robot.canPerform(mission)) {
-                mission.fail("Robot cannot perform mission");
-                addMission(mission);
-                return false;
-            }
-
-            if (robot instanceof ExplorationRover
-                    || robot instanceof Drone) {
-                hasRover = true;
-            }
-
-            if (robot instanceof RepairRobot) {
-                hasRepairRobot = true;
-            }
-
-        } else {
-            mission.fail("Invalid agent");
-            addMission(mission);
-            return false;
-        }
-    }
-
-    if (mission instanceof ExplorationMission) {
-        if (!hasScientist || !hasRover) {
-            mission.fail("Exploration needs scientist and rover/drone");
-            addMission(mission);
-            return false;
-        }
-    }
-
-    if (mission instanceof RepairMission) {
-        if (!hasEngineer || !hasRepairRobot) {
-            mission.fail("Repair needs engineer and repair robot");
-            addMission(mission);
-            return false;
-        }
-    }
-
-    if (mission instanceof ResearchMission) {
-        if (!hasScientist) {
-            mission.fail("Research needs a scientist");
-            addMission(mission);
-            return false;
-        }
-    }
-
-    if (mission instanceof RescueMission) {
-        if (!hasHuman || !hasRover) {
-            mission.fail("Rescue needs personnel and vehicle");
+        if (!agent.canPerform(mission)) {
+            mission.fail("Agent cannot perform mission");
             addMission(mission);
             return false;
         }
@@ -193,35 +118,15 @@ public boolean submitMission(Mission mission) {
         return false;
     }
 
-    if (mission instanceof ResearchMission || mission instanceof RepairMission) {
+    Facility target = mission.getTargetFacility();
 
-        Facility target = mission.getTargetFacility();
+    if (target != null &&
+            (!facilities.contains(target)
+            || !target.getOperationalStatus())) {
 
-        if (mission instanceof ResearchMission) {
-            if (!(target instanceof Laboratory)|| !facilities.contains(target)|| !target.getOperationalStatus()) {
-
-                mission.fail("Operational laboratory required");
-                addMission(mission);
-                return false;
-            }
-
-            if (target.getEquipment() == null
-                    || target.getEquipment().isEmpty()) {
-
-                mission.fail("Scientific equipment required");
-                addMission(mission);
-                return false;
-            }
-        }
-
-        if (target != null &&
-                (!facilities.contains(target)
-                || !target.getOperationalStatus())) {
-
-            mission.fail("Target facility unavailable");
-            addMission(mission);
-            return false;
-        }
+        mission.fail("Target facility unavailable");
+        addMission(mission);
+        return false;
     }
 
     double[] needed = {
@@ -394,26 +299,87 @@ public void releaseAgents(Mission mission) {
         }
     }
 
-    public ColonyMembers findResponder(String type, boolean isRobot) {
+    public ColonyMembers findResponder(EmergencyType type) {
         for (ColonyMembers member : members) {
             if (!member.getAvailability()) continue;
-            if (isRobot) {
-                if (member instanceof RoboticUnit) {
-                    if ("OXYGEN_LEAK".equals(type) && member instanceof RepairRobot) return member;
-                    if ("ROVER_BREAKDOWN".equals(type) && member instanceof RepairRobot) return member;
-                }
-            } else {
-                if (member instanceof HumanPersonnel) {
-                    if ("OXYGEN_LEAK".equals(type) && member instanceof Engineer) return member;
-                    if ("FIRE".equals(type) && member instanceof Engineer) return member;
-                    if ("ROVER_BREAKDOWN".equals(type) && member instanceof Engineer) return member;
-                    if ("MEDICAL".equals(type) && member instanceof MedicalOfficer) return member;
-                }
+            if (member.canHandle(type)) {
+                return member;
             }
         }
         return null;
     }
 
+    public double getTotalResource(ResourceType type) {
+        double total = 0.0;
+        for (Facility facility : facilities) {
+            if (facility.getOperationalStatus() && facility.getResources() != null) {
+                total += getResourceAmount(facility.getResources(), typeToIndex(type));
+            }
+        }
+        return total;
+    }
+
+    public boolean hasResources(Map<ResourceType, Integer> required) {
+        for (Map.Entry<ResourceType, Integer> entry : required.entrySet()) {
+            if (getTotalResource(entry.getKey()) < entry.getValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean consumeResources(Map<ResourceType, Integer> required) {
+        if (!hasResources(required)) {
+            return false;
+        }
+        for (Map.Entry<ResourceType, Integer> entry : required.entrySet()) {
+            ResourceType type = entry.getKey();
+            int remaining = entry.getValue();
+            for (Facility facility : facilities) {
+                if (!facility.getOperationalStatus() || facility.getResources() == null) {
+                    continue;
+                }
+                FacilityResources store = facility.getResources();
+                int index = typeToIndex(type);
+                double available = getResourceAmount(store, index);
+                double take = Math.min(available, remaining);
+                if (take > 0) {
+                    setResourceAmount(store, index, available - take);
+                    remaining -= (int) take;
+                }
+                if (remaining <= 0) {
+                    break;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void displayStatus() {
+        System.out.println("=== Colony Status Report: " + colonyName + " ===");
+        System.out.println("Total Available Resources:");
+        for (ResourceType type : ResourceType.values()) {
+            System.out.println("  " + type + ": " + getTotalResource(type));
+        }
+        System.out.println("Facility Operational Status:");
+        for (Facility facility : facilities) {
+            System.out.println("  " + facility.getFacilityName() + ": "
+                    + (facility.getOperationalStatus() ? "Operational" : "Offline"));
+        }
+    }
+
+    private int typeToIndex(ResourceType type) {
+        switch (type) {
+            case OXYGEN: return 0;
+            case WATER: return 1;
+            case FOOD: return 2;
+            case FUEL: return 3;
+            case BATTERY_POWER: return 4;
+            case MEDICAL_SUPPLIES: return 5;
+            case SPARE_PARTS: return 6;
+        }
+        return -1;
+    }
 
     public void displayInfo() {
         System.out.println("Colony Name: " + colonyName);

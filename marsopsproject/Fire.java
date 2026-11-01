@@ -1,4 +1,3 @@
-
 public class Fire extends Emergency {
     private Laboratory laboratory;
     private double oxygenBurned;
@@ -21,7 +20,7 @@ public class Fire extends Emergency {
             laboratory.getResources().setFacilityOxegen(Math.max(0, current - oxygenBurned));
         }
 
-        ColonyMembers human = colony.findResponder("FIRE", false);
+        ColonyMembers human = colony.findResponder(EmergencyType.FIRE);
 
         double[] cost = new double[7];
         cost[6] = 1; // Spare parts
