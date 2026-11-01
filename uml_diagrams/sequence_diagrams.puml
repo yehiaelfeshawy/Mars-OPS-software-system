@@ -1,0 +1,78 @@
+@startuml
+skinparam monochrome true
+skinparam sequenceMessageAlign center
+
+actor "Colony Operator" as op
+actor "Emergency Operator" as eop
+
+participant "MarsColony" as colony
+participant "Simulation" as sim
+participant "Mission" as mission
+participant "ColonyMembers" as agent
+participant "Environment" as env
+
+' =========================================================
+' 1. Mission Submission & Execution
+' =========================================================
+op -> colony : submitMission(mission)
+colony -> mission : getAssignedAgents()
+loop for each agent
+  colony -> agent : canPerform(mission)
+  agent --> colony : boolean
+end
+colony -> colony : hasResources(required)
+alt resources sufficient
+  colony -> mission : assign()
+  colony -> colony : consumeResources(required)
+  colony --> op : true
+else
+  colony --> op : false
+end
+
+op -> sim : advanceTime(units)
+loop for each unit
+  sim -> mission : isAllowedIn(env)
+  env --> sim : boolean
+  alt allowed
+    sim -> mission : advance()
+  else blocked
+    sim -> mission : fail("interrupted")
+  end
+end
+alt mission COMPLETED or FAILED
+  sim -> colony : releaseAgents(mission)
+end
+
+' =========================================================
+' 2. Oxygen Leak Emergency
+' =========================================================
+eop -> colony : respond(leak)
+colony -> colony : findResponder(OXYGEN_LEAK)
+colony -> colony : findResponder(OXYGEN_LEAK)
+alt both found
+  colony -> colony : hasResources(parts, battery)
+  alt sufficient
+    colony -> colony : consumeResources(parts, battery)
+    colony -> colony : resolve()
+  else insufficient
+    colony -> habitat : deduct oxygen (penalty)
+    colony -> colony : unresolved("Insufficient resources")
+  end
+else missing responder
+  colony -> habitat : deduct oxygen (penalty)
+  colony -> colony : unresolved("responders unavailable")
+end
+
+' =========================================================
+' 3. Environmental Restriction (Dust Storm)
+' =========================================================
+op -> env : setCondition("Dust Storm")
+op -> colony : submitMission(explorationMission)
+colony -> mission : isAllowedIn(env)
+mission -> env : checkSurfaceOperations()
+env --> mission : false
+mission --> colony : not allowed
+colony -> mission : fail("Environment does not allow mission")
+colony --> op : false
+
+@enduml

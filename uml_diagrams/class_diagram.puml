@@ -1,0 +1,461 @@
+@startuml
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+hide empty members
+
+' ============ Enums ============
+enum ResourceType {
+  OXYGEN
+  WATER
+  FOOD
+  FUEL
+  BATTERY_POWER
+  MEDICAL_SUPPLIES
+  SPARE_PARTS
+}
+
+enum EmergencyType {
+  OXYGEN_LEAK
+  FIRE
+  ROVER_BREAKDOWN
+  MEDICAL
+}
+
+enum MissionState {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+' ============ ColonyMembers Hierarchy ============
+abstract class ColonyMembers {
+  - int ID
+  - String location
+  - boolean availability
+  + setID(int)
+  + int getID()
+  + setLocation(String)
+  + String getLocation()
+  + setAvailability(boolean)
+  + boolean getAvailability()
+  + abstract void checkStatus()
+  + abstract boolean canPerform(Mission)
+  + abstract boolean canHandle(EmergencyType)
+}
+
+abstract class HumanPersonnel extends ColonyMembers {
+  - String name
+  - int health
+  - String skills
+  - int fatigue
+  - String personnelType
+  + setName(String)
+  + String getName()
+  + setHealth(int)
+  + int getHealth()
+  + setSkills(String)
+  + String getSkills()
+  + setFatigue(int)
+  + int getFatigue()
+  + setPersonnelType(String)
+  + String getPersonnelType()
+  + void capabilities()
+  + abstract void checkStatus()
+}
+
+class Scientist extends HumanPersonnel {
+  - String specialization
+  + Scientist(String, int, int, String, int, String)
+  + setSpecialization(String)
+  + String getSpecialization()
+  + void checkStatus()
+  + boolean canPerform(Mission)
+  + boolean canHandle(EmergencyType)
+}
+
+class Engineer extends HumanPersonnel {
+  - String specialization
+  + Engineer(String, int, int, String, int, String)
+  + setSpecialization(String)
+  + String getSpecialization()
+  + void checkStatus()
+  + boolean canPerform(Mission)
+  + boolean canHandle(EmergencyType)
+}
+
+class MedicalOfficer extends HumanPersonnel {
+  - String specialization
+  + MedicalOfficer(String, int, int, String, int, String)
+  + setSpecialization(String)
+  + String getSpecialization()
+  + void checkStatus()
+  + boolean canPerform(Mission)
+  + boolean canHandle(EmergencyType)
+}
+
+abstract class RoboticUnit extends ColonyMembers {
+  - int battery
+  - String damageStatus
+  - String robotType
+  + setBattery(int)
+  + int getBattery()
+  + setDamageStatus(String)
+  + String getDamageStatus()
+  + setRobotType(String)
+  + String getRobotType()
+  + void capabilities()
+  + abstract void checkStatus()
+}
+
+class ExplorationRover extends RoboticUnit {
+  - String model
+  + ExplorationRover(int, int, String, String)
+  + setModel(String)
+  + String getModel()
+  + void checkStatus()
+  + boolean canPerform(Mission)
+  + boolean canHandle(EmergencyType)
+}
+
+class RepairRobot extends RoboticUnit {
+  - String model
+  + RepairRobot(int, int, String, String)
+  + setModel(String)
+  + String getModel()
+  + void checkStatus()
+  + boolean canPerform(Mission)
+  + boolean canHandle(EmergencyType)
+}
+
+class Drone extends RoboticUnit {
+  - String model
+  + Drone(int, int, String, String)
+  + setModel(String)
+  + String getModel()
+  + void checkStatus()
+  + boolean canPerform(Mission)
+  + boolean canHandle(EmergencyType)
+}
+
+' ============ Mission Hierarchy ============
+abstract class Mission {
+  - int missionID
+  - String missionName
+  - MissionState state
+  - int duration
+  - int progress
+  - String failureReason
+  - ArrayList<ColonyMembers> assignedAgents
+  - double requiredOxygen
+  - double requiredWater
+  - double requiredFood
+  - double requiredFuel
+  - double requiredBattery
+  - double requiredMedicalSupplies
+  - double requiredSpareParts
+  - Facility targetFacility
+  + Mission(int, String, int)
+  + setMissionID(int)
+  + int getMissionID()
+  + setMissionName(String)
+  + String getMissionName()
+  + MissionState getState()
+  + setDuration(int)
+  + int getDuration()
+  + int getProgress()
+  + String getFailureReason()
+  + ArrayList<ColonyMembers> getAssignedAgents()
+  + addAgent(ColonyMembers)
+  + setTargetFacility(Facility)
+  + Facility getTargetFacility()
+  + setRequiredOxygen(double)
+  + double getRequiredOxygen()
+  + setRequiredWater(double)
+  + double getRequiredWater()
+  + setRequiredFood(double)
+  + double getRequiredFood()
+  + setRequiredFuel(double)
+  + double getRequiredFuel()
+  + setRequiredBattery(double)
+  + double getRequiredBattery()
+  + setRequiredMedicalSupplies(double)
+  + double getRequiredMedicalSupplies()
+  + setRequiredSpareParts(double)
+  + double getRequiredSpareParts()
+  + assign()
+  + advance()
+  + fail(String)
+  + complete()
+  + abstract boolean isAllowedIn(Environment)
+  + displayInfo()
+}
+
+class ResearchMission extends Mission {
+  - String researchTopic
+  + ResearchMission(int, String, int, String)
+  + setResearchTopic(String)
+  + String getResearchTopic()
+  + boolean isAllowedIn(Environment)
+  + void displayInfo()
+}
+
+class ExplorationMission extends Mission {
+  - String explorationRegion
+  + ExplorationMission(int, String, int, String)
+  + setExplorationRegion(String)
+  + String getExplorationRegion()
+  + boolean isAllowedIn(Environment)
+  + void displayInfo()
+}
+
+class RepairMission extends Mission {
+  - String repairDescription
+  + RepairMission(int, String, int, String)
+  + setRepairDescription(String)
+  + String getRepairDescription()
+  + boolean isAllowedIn(Environment)
+  + void displayInfo()
+}
+
+class RescueMission extends Mission {
+  - String rescueLocation
+  + RescueMission(int, String, int, String)
+  + setRescueLocation(String)
+  + String getRescueLocation()
+  + boolean isAllowedIn(Environment)
+  + void displayInfo()
+}
+
+' ============ Emergency Hierarchy ============
+abstract class Emergency {
+  - String type
+  - String status
+  - String reason
+  + Emergency(String)
+  + String getType()
+  + String getStatus()
+  + String getReason()
+  + protected void resolve()
+  + protected void unresolved(String)
+  + protected void dispatch(ColonyMembers, String)
+  + protected void release(ColonyMembers)
+  + abstract void respond(MarsColony)
+}
+
+class Fire extends Emergency {
+  - Laboratory laboratory
+  - double oxygenBurned
+  + Fire(Laboratory, double)
+  + void respond(MarsColony)
+}
+
+class OxygenLeak extends Emergency {
+  - Habitat habitat
+  - double loss
+  + OxygenLeak(Habitat, double)
+  + void respond(MarsColony)
+}
+
+class RoverBreakdown extends Emergency {
+  - ExplorationRover rover
+  + RoverBreakdown(ExplorationRover)
+  + void respond(MarsColony)
+}
+
+class MedicalEmergency extends Emergency {
+  - HumanPersonnel patient
+  - Facility facility
+  + MedicalEmergency(HumanPersonnel, Facility)
+  + void respond(MarsColony)
+}
+
+' ============ Facility Hierarchy ============
+class Facility {
+  - String facilityType
+  - String location
+  - int capacity
+  - boolean operationalStatus
+  - FacilityResources resources
+  - String equipment
+  - String facilityName
+  + Facility()
+  + setFacilityType(String)
+  + String getFacilityType()
+  + setLocation(String)
+  + String getLocation()
+  + setCapacity(int)
+  + int getCapacity()
+  + setOperationalStatus(boolean)
+  + boolean getOperationalStatus()
+  + setFacilityName(String)
+  + String getFacilityName()
+  + setResources(double, double, double, double, double, double, double)
+  + FacilityResources getResources()
+  + setEquipment(String)
+  + String getEquipment()
+  + displayInfo()
+}
+
+class Habitat extends Facility {
+  - int numberOfResidents
+  + Habitat(String, String, int, int)
+  + setNumberOfResidents(int)
+  + int getNumberOfResidents()
+  + void displayInfo()
+}
+
+class Laboratory extends Facility {
+  - String researchType
+  + Laboratory(String, String, int, String)
+  + setResearchType(String)
+  + String getResearchType()
+  + void displayInfo()
+}
+
+class FacilityResources {
+  - Facility facility
+  - double Oxegen
+  - double Water
+  - double Food
+  - double Fuel
+  - double Battery_power
+  - double Medical_supplies
+  - double Spare_parts
+  + FacilityResources(Facility, double, double, double, double, double, double, double)
+  + static double get_oxegen()
+  + static double get_water()
+  + static double get_food()
+  + static double get_fuel()
+  + static double get_battery_power()
+  + static double get_medical_supplies()
+  + static double get_spare_parts()
+  + Boolean Facility_Repair_Mission(RoboticUnit)
+  + Boolean Facility_Medical_emergency(HumanPersonnel)
+  + Boolean Drink_water(HumanPersonnel)
+  + Boolean Consume_food(HumanPersonnel)
+  + Boolean Recharge_robot(RoboticUnit)
+  + setFacility(Facility)
+  + setFacilityOxegen(double)
+  + double getFacilityOxegen()
+  + setFacilityWater(double)
+  + double getFacilityWater()
+  + setFacilityFood(double)
+  + double getFacilityFood()
+  + setFacilityFuel(double)
+  + double getFacilityFuel()
+  + setFacilityBattery_power(double)
+  + double getFacilityBattery_power()
+  + setFacilityMedical_supplies(double)
+  + double getFacilityMedical_supplies()
+  + setFacilitySpare_parts(double)
+  + double getFacilitySpare_parts()
+  + Facility getFacility()
+  + void displayFacilityResources()
+}
+
+' ============ Core Controllers ============
+class MarsColony {
+  - String colonyName
+  - ArrayList<ColonyMembers> members
+  - ArrayList<Facility> facilities
+  - ArrayList<Mission> missions
+  - Mission activeMission
+  - Environment environment
+  + MarsColony(String, Environment)
+  + setColonyName(String)
+  + String getColonyName()
+  + Environment getEnvironment()
+  + Mission getActiveMission()
+  + ArrayList<ColonyMembers> getMembers()
+  + ArrayList<Facility> getFacilities()
+  + ArrayList<Mission> getMissions()
+  + addMember(ColonyMembers)
+  + addFacility(Facility)
+  + addMission(Mission)
+  + boolean submitMission(Mission)
+  + void releaseAgents(Mission)
+  + ColonyMembers findResponder(EmergencyType)
+  + double getTotalResource(ResourceType)
+  + boolean hasResources(Map<ResourceType, Integer>)
+  + boolean consumeResources(Map<ResourceType, Integer>)
+  + void displayStatus()
+  + void displayInfo()
+}
+
+class Simulation {
+  - MarsColony colony
+  - int currentTime
+  + Simulation(MarsColony)
+  + MarsColony getColony()
+  + int getCurrentTime()
+  + void advanceTime(int)
+}
+
+class Environment {
+  - String condition
+  + Environment(String)
+  + setCondition(String)
+  + String getCondition()
+  + boolean checkSurfaceOperations()
+  + boolean checkCommunication()
+  + void displayInfo()
+}
+
+' ============ Relationships ============
+
+' Inheritance (Generalization)
+HumanPersonnel --|> ColonyMembers
+RoboticUnit --|> ColonyMembers
+Scientist --|> HumanPersonnel
+Engineer --|> HumanPersonnel
+MedicalOfficer --|> HumanPersonnel
+ExplorationRover --|> RoboticUnit
+RepairRobot --|> RoboticUnit
+Drone --|> RoboticUnit
+ResearchMission --|> Mission
+ExplorationMission --|> Mission
+RepairMission --|> Mission
+RescueMission --|> Mission
+Fire --|> Emergency
+OxygenLeak --|> Emergency
+RoverBreakdown --|> Emergency
+MedicalEmergency --|> Emergency
+Habitat --|> Facility
+Laboratory --|> Facility
+
+' Association: Mission assigned agents
+Mission "1" o-- "0..*" ColonyMembers : assignedAgents
+
+' Association: MarsColony members
+MarsColony "1" o-- "0..*" ColonyMembers : members
+
+' Association: MarsColony facilities
+MarsColony "1" o-- "0..*" Facility : facilities
+
+' Association: MarsColony missions
+MarsColony "1" o-- "0..*" Mission : missions
+
+' Association: MarsColony active mission
+MarsColony "1" o-- "0..1" Mission : activeMission
+
+' Association: MarsColony environment
+MarsColony "1" -- "1" Environment : environment
+
+' Association: Simulation colony
+Simulation "1" -- "1" MarsColony : colony
+
+' Association: Emergency respond takes colony
+Emergency ..> MarsColony : respond(MarsColony)
+
+' Association: Mission target facility
+Mission "1" .. "0..1" Facility : targetFacility
+
+' Composition: Facility owns FacilityResources
+Facility *-- "1" FacilityResources : resources
+
+' Aggregation: FacilityResources static registry
+FacilityResources o-- "0..*" Facility : static registry
+
+@enduml

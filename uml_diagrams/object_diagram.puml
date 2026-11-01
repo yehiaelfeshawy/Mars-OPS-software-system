@@ -1,0 +1,75 @@
+@startuml
+skinparam monochrome true
+hide circle
+
+' Objects
+object "MarsColony\nAlpha Base" as colony {
+  colonyName = "Alpha Base"
+  activeMission = M-101
+}
+
+object "Environment\nNormal" as env {
+  condition = "Normal"
+}
+
+object "Scientist\nDr. Reed" as reed {
+  ID = 101
+  name = "Dr. Reed"
+  health = 100
+  fatigue = 0
+  availability = true
+  specialization = "Geology"
+}
+
+object "ExplorationRover\nR-01" as r01 {
+  ID = 201
+  battery = 100
+  damageStatus = "Operational"
+  availability = true
+  model = "Rover X1"
+}
+
+object "Habitat\nHabitat Alpha" as habAlpha {
+  facilityName = "Habitat Alpha"
+  operationalStatus = true
+  capacity = 20
+}
+
+object "FacilityResources" as fr {
+  Oxegen = 300
+  Water = 100
+  Food = 50
+  Fuel = 20
+  Battery_power = 100
+  Medical_supplies = 10
+  Spare_parts = 5
+}
+
+object "ExplorationMission\nM-101" as m101 {
+  missionID = 301
+  missionName = "Explore Sector A"
+  state = "IN_PROGRESS"
+  duration = 3
+  progress = 2
+}
+
+object "ColonyMembers\n[assigned]" as assignedAgents {
+  members = [reed, r01]
+}
+
+' Links
+colony -- env : environment
+colony -- reed : members
+colony -- r01 : members
+colony -- habAlpha : facilities
+colony -- m101 : missions
+colony .. m101 : activeMission
+
+habAlpha -- fr : resources
+
+m101 .. reed : assignedAgent
+m101 .. r01 : assignedAgent
+
+env .. colony : checkSurfaceOperations()
+
+@enduml

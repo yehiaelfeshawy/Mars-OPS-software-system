@@ -1,0 +1,45 @@
+@startuml
+skinparam monochrome true
+hide circle
+
+state "Initial" as Initial <<initial>>
+state "PENDING" as PENDING
+state "ASSIGNED" as ASSIGNED
+state "IN_PROGRESS" as IN_PROGRESS
+state "COMPLETED" as COMPLETED
+state "FAILED" as FAILED
+state "Final" as Final <<final>>
+
+Initial --> PENDING : Mission created
+
+PENDING --> ASSIGNED : submitMission() success\n[all agents canPerform\n&& hasResources]
+
+ASSIGNED --> IN_PROGRESS : advanceTime()\n[isAllowedIn(env) == true]
+
+IN_PROGRESS --> IN_PROGRESS : advanceTime()\n[progress < duration]
+
+IN_PROGRESS --> COMPLETED : advanceTime()\n[progress >= duration]
+
+ASSIGNED --> FAILED : !isAllowedIn(env)\nor validation failure
+
+IN_PROGRESS --> FAILED : !isAllowedIn(env)\nor mission.fail(reason)
+
+COMPLETED --> Final : releaseAgents()
+
+FAILED --> Final : releaseAgents()
+
+note right of ASSIGNED
+  Agents reserved,
+  resources consumed
+end note
+
+note right of COMPLETED
+  Agents released
+end note
+
+note right of FAILED
+  Agents released,
+  failureReason set
+end note
+
+@enduml

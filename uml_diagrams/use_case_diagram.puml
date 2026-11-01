@@ -1,0 +1,29 @@
+@startuml
+skinparam monochrome true
+
+left to right direction
+package "MARS-OPS System" {
+  usecase "Submit Mission" as UC1
+  usecase "Monitor Mission Progress" as UC2
+  usecase "View Colony Status" as UC3
+  usecase "Handle Emergency" as UC4
+  usecase "Dispatch Responder" as UC5
+  usecase "Check Resource Availability" as UC6
+  usecase "Set Environment Condition" as UC7
+}
+
+actor "Colony Operator" as op
+actor "Emergency Operator" as eop
+
+op --> UC1
+op --> UC2
+op --> UC3
+op --> UC7
+eop --> UC4
+
+UC1 .> UC6 : <<include>>
+UC4 .> UC5 : <<include>>
+UC4 .> UC1 : <<extend>>
+UC2 .> UC3 : <<extend>>
+
+@enduml
