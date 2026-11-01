@@ -93,7 +93,6 @@ public class MarsOpsProject {
 
         Environment env3 = new Environment("Normal");
         MarsColony colony3 = new MarsColony("Mars Base Alpha", env3);
-        Simulation simulation3 = new Simulation(colony3);
 
         Engineer engineer = new Engineer(
             "Sarah", 201, 100, "Repair", 0, "Mechanical"
